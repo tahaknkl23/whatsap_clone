@@ -28,6 +28,6 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(color: appBarColor),
         ),
         onGenerateRoute: (settings) => generateRoute(settings),
-        home: const UserInformationScreen());
+        home: const LandingScreen());
   }
 }

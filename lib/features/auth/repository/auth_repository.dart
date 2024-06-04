@@ -9,6 +9,7 @@ import 'package:whatsapp_ui/common/utils/utils.dart';
 import 'package:whatsapp_ui/features/auth/screens/otp_screen.dart';
 import 'package:whatsapp_ui/features/auth/screens/user_information_screen.dart';
 import 'package:whatsapp_ui/models/user_model.dart';
+import 'package:whatsapp_ui/screens/mobile_layout_screen.dart';
 
 final authRepositoryProvider = Provider((ref) => AuthRepository(
       auth: FirebaseAuth.instance,
@@ -20,6 +21,11 @@ class AuthRepository {
   final FirebaseFirestore firestore;
 
   AuthRepository({required this.auth, required this.firestore});
+
+  Future<UserModel> getCurrentUserData() async {
+    var userData = await firestore.collection('users').doc(auth.currentUser!.uid).get();
+    return UserModel.fromMap(userData.data()!);
+  }
 
   void signInWithPhoneNumber(BuildContext context, String phoneNumber) {
     try {
@@ -63,7 +69,7 @@ class AuthRepository {
   void saveUserDataFirebase({
     required String name,
     required File? profilePic,
-    required WidgetRef ref,
+    required ProviderRef ref,
     required BuildContext context,
   }) async {
     try {
@@ -88,7 +94,12 @@ class AuthRepository {
         groupId: [],
       );
       await firestore.collection('users').doc(uid).set(user.toMap()); // burda user'ı firebase'e kaydediyoruz
-      Navigator.pushNamedAndRemoveUntil(context, UserInformationScreen.routeName, (route) => false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MobileLayoutScreen(),
+          ),
+          (route) => false);
     } catch (e) {
       showSnackBar(context: context, content: e.toString());
     }
