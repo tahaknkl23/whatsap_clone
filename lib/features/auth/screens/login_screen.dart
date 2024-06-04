@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_ui/colors.dart';
+import 'package:whatsapp_ui/common/utils/utils.dart';
 import 'package:whatsapp_ui/common/widgets/custom_buton.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:whatsapp_ui/features/auth/controller/auth_controller.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   static const routeName = '/login-screen';
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final phoneController = TextEditingController();
   Country? country;
   @override
@@ -29,6 +32,19 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       },
     );
+  }
+
+// burda şunu yapıyoruz eğer kullanıcı telefon numarasını doğrulamışsa direk giriş yapmasını sağlıyoruz
+  void sendPhoneNumber() {
+    String phoneNumber = phoneController.text.trim();
+    if (country != null && phoneNumber.isNotEmpty) {
+      ref.read(authControllerProvider).signInWithPhoneNumber(
+            context,
+            "+${country!.phoneCode}$phoneNumber",
+          );
+    } else {
+      showSnackBar(context: context, content: "Please enter a valid phone number");
+    }
   }
 
   @override
@@ -80,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: CustomButton(
                   text: "NEXT",
-                  onPressed: () {},
+                  onPressed: sendPhoneNumber,
                 ),
               ),
             ),
