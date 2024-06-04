@@ -19,8 +19,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Country? country;
   @override
   void dispose() {
-    phoneController.dispose();
     super.dispose();
+    phoneController.dispose();
   }
 
   void pickCountry() {
