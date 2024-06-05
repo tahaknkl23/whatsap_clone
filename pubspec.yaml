@@ -43,6 +43,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   file_picker_pro: ^1.8.0
   image_picker: ^1.1.2
+  flutter_contacts: ^1.1.8
 
 dev_dependencies:
   flutter_test:

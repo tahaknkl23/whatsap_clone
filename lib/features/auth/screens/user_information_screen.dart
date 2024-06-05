@@ -15,6 +15,7 @@ class UserInformationScreen extends ConsumerStatefulWidget {
   ConsumerState<UserInformationScreen> createState() => _UserInformationScreenState();
 }
 
+
 class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
   final TextEditingController nameController = TextEditingController();
   File? image;
