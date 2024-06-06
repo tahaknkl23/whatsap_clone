@@ -16,14 +16,11 @@ class SelectContactRepository {
     required this.firestore,
   });
 
-//burda rehberi getirme işlemini yapıyoruz
   Future<List<Contact>> getContacts() async {
     List<Contact> contacts = [];
     try {
       if (await FlutterContacts.requestPermission()) {
-        await FlutterContacts.getContacts(
-          withProperties: true,
-        );
+        contacts = await FlutterContacts.getContacts(withProperties: true);
       }
     } catch (e) {
       debugPrint(e.toString());
